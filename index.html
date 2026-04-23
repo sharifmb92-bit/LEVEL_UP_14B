@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>LEVEL_UP_14_PRO</title>
+    
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="LVL14">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3233/3233036.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3233/3233036.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --panel: #161616;
+            --accent: #00f2fe; 
+            --danger: #ff4757; 
+            --warning: #f59e0b;
+            --success: #10b981;
+            --text-main: #ffffff;
+            --text-dim: #777777;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0; background-color: var(--bg); color: var(--text-main);
+            display: flex; justify-content: center; overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .app-container {
+            width: 100%; max-width: 420px; min-height: 100vh;
+            background: var(--bg); position: relative; padding-bottom: 100px;
+        }
+
+        header {
+            padding: 40px 25px 20px; text-align: center;
+            background: linear-gradient(to bottom, #1a1a1a, var(--bg));
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 1.6rem; margin: 0;
+            letter-spacing: 4px; color: var(--accent);
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Sistema de Alertas Inteligentes */
+        .smart-alert {
+            margin: 10px 25px; padding: 15px; border-radius: 12px;
+            font-size: 0.85rem; font-weight: 700; text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; gap: 10px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
+
+        .alert-normal { background: rgba(0, 242, 254, 0.1); color: var(--accent); border-color: var(--accent); }
+        .alert-warning { background: rgba(245, 158, 11, 0.1); color: var(--warning); border-color: var(--warning); }
+        .alert-danger { background: rgba(255, 71, 87, 0.1); color: var(--danger); border-color: var(--danger); }
+
+        /* Stats */
+        .stats-card {
+            margin: 0 25px 25px; background: var(--panel);
+            border-radius: 20px; padding: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .xp-label { font-family: 'Orbitron'; font-size: 0.65rem; color: var(--text-dim); margin-bottom: 10px; text-transform: uppercase; }
+        .xp-total { font-family: 'Orbitron'; font-size: 2.2rem; color: var(--text-main); }
+
+        .progress-bar-bg {
+            width: 100%; height: 10px; background: #222; border-radius: 5px; margin-top: 15px; overflow: hidden;
+        }
+
+        #xpBarFill {
+            width: 0%; height: 100%; 
+            background: linear-gradient(90deg, var(--accent), #4facfe);
+            transition: width 0.8s ease;
+        }
+
+        /* Misiones */
+        .mission-list { padding: 0 25px; }
+
+        .mission-item {
+            background: var(--panel); border-radius: 18px; padding: 18px;
+            margin-bottom: 12px; display: flex; align-items: center;
+            justify-content: space-between; border-left: 4px solid var(--danger);
+            transition: 0.3s; cursor: pointer;
+        }
+
+        .mission-item.verified { border-left-color: var(--success); opacity: 0.6; }
+
+        .mission-content h3 { font-size: 1rem; margin: 0; color: var(--text-main); }
+        .mission-content p { font-size: 0.75rem; margin: 4px 0 0; color: var(--text-dim); }
+
+        .xp-badge {
+            font-family: 'Orbitron'; font-size: 0.8rem; color: var(--accent);
+            background: rgba(0, 242, 254, 0.1); padding: 6px 10px; border-radius: 8px;
+        }
+
+        .verified-icon { color: var(--success); font-weight: 900; font-family: 'Orbitron'; font-size: 0.7rem; }
+
+        /* Contrato Social */
+        .rules-box {
+            margin: 25px; padding: 15px; border-radius: 15px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+        }
+        .rules-box h4 { margin: 0 0 10px; font-family: 'Orbitron'; font-size: 0.75rem; color: var(--text-dim); }
+        .rules-box li { font-size: 0.75rem; color: var(--text-dim); margin-bottom: 5px; }
+
+        .nav-bottom {
+            position: fixed; bottom: 0; width: 100%; max-width: 420px; height: 70px;
+            background: var(--panel); display: flex; justify-content: space-around;
+            align-items: center; border-top: 1px solid #222; z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>LEVEL_UP_14</h1>
+        <p style="color: var(--accent); font-size: 0.65rem; margin-top: 8px; font-family: 'Orbitron';">SISTEMA DE GESTIÓN AUTÓNOMA</p>
+    </header>
+
+    <div id="smartAlert" class="smart-alert alert-normal">
+        <span id="alertIcon">📡</span>
+        <span id="alertMessage">SISTEMA OPERATIVO: ESPERANDO ÓRDENES</span>
+    </div>
+
+    <div class="stats-card">
+        <div class="xp-label">EXPERIENCIA_ACUMULADA</div>
+        <div class="xp-total" id="xpText">0</div>
+        <div class="progress-bar-bg">
+            <div id="xpBarFill"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+            <span style="font-size: 0.6rem; color: var(--text-dim);">META: 1000 XP</span>
+            <span id="bonusText" style="font-size: 0.6rem; color: var(--success); font-weight: 900;"></span>
+        </div>
+    </div>
+
+    <div class="mission-list">
+        <div class="xp-label" style="margin-left: 5px; margin-bottom: 12px;">MISIONES_CRÍTICAS (NIVEL 1)</div>
+
+        <div class="mission-item" onclick="validateMission(this, 1, 30)">
+            <div class="mission-content">
+                <h3>Operación_Limpieza</h3>
+                <p>Cero envases. Escritorio despejado.</p>
+            </div>
+            <div class="xp-badge">+30 XP</div>
+        </div>
+
+        <div class="mission-item" onclick="validateMission(this, 2, 30)">
+            <div class="mission-content">
+                <h3>Logística_Base</h3>
+                <p>Mochila y ropa de mañana listas.</p>
+            </div>
+            <div class="xp-badge">+30 XP</div>
+        </div>
+
+        <div class="mission-item" onclick="validateMission(this, 3, 60)">
+            <div class="mission-content">
+                <h3>Enfoque_DeepWork</h3>
+                <p>Deberes y estudio (Cero móvil).</p>
+            </div>
+            <div class="xp-badge">+60 XP</div>
+        </div>
+    </div>
+
+    <div class="rules-box">
+        <h4>CONSTITUCIÓN_BASE</h4>
+        <ul style="padding-left: 15px; margin: 0;">
+            <li>Misiones Nivel 1 listas antes de las 18:00 = <b>Bonus Pantalla</b>.</li>
+            <li>Marcar sin completar = <b>Suspensión de cuenta</b>.</li>
+            <li>1000 XP = <b>Bonus Especial del Auditor</b>.</li>
+        </ul>
+    </div>
+
+    <nav class="nav-bottom">
+        <div onclick="location.reload()" style="font-size: 1.2rem; color: var(--accent);">🔄</div>
+        <div style="font-size: 1.2rem; opacity: 0.3;">🏆</div>
+        <div onclick="alert('CÓDIGO AUDITOR REQUERIDO')" style="font-size: 1.2rem; opacity: 0.3;">⚙️</div>
+    </nav>
+</div>
+
+<script>
+    const CLAVE_AUDITOR = "1414";
+    let points = parseInt(localStorage.getItem('lvl14_points')) || 0;
+    let lastDate = localStorage.getItem('lvl14_date') || "";
+    
+    // Reiniciar misiones si es un nuevo día
+    const today = new Date().toLocaleDateString();
+    if (lastDate !== today) {
+        localStorage.setItem('lvl14_today', JSON.stringify([]));
+        localStorage.setItem('lvl14_date', today);
+    }
+    
+    let completedToday = JSON.parse(localStorage.getItem('lvl14_today')) || [];
+
+    function init() {
+        updateUI();
+        checkTimeAlerts();
+        restoreMissions();
+        setInterval(checkTimeAlerts, 60000); // Revisar cada minuto
+    }
+
+    function checkTimeAlerts() {
+        const now = new Date();
+        const hour = now.getHours();
+        const alertBox = document.getElementById('smartAlert');
+        const alertMsg = document.getElementById('alertMessage');
+        const alertIcon = document.getElementById('alertIcon');
+
+        // Lógica de avisos inteligentes
+        if (hour < 16) {
+            alertBox.className = "smart-alert alert-normal";
+            alertMsg.innerText = "PREPARANDO JORNADA. RECOGE FUERZAS.";
+            alertIcon.innerText = "🔋";
+        } else if (hour >= 16 && hour < 17) {
+            alertBox.className = "smart-alert alert-normal";
+            alertMsg.innerText = "HORA DE INICIO. ¡A POR EL BONUS!";
+            alertIcon.innerText = "🚀";
+        } else if (hour >= 17 && hour < 18) {
+            alertBox.className = "smart-alert alert-warning";
+            alertMsg.innerText = "QUEDA 1 HORA PARA EL BONUS DE LAS 18:00.";
+            alertIcon.innerText = "⏳";
+        } else if (hour >= 18 && hour < 20) {
+            const allDone = completedToday.length >= 3;
+            if (allDone) {
+                alertBox.className = "smart-alert alert-normal";
+                alertMsg.innerText = "BONUS ACTIVADO. DISFRUTA TU TIEMPO.";
+                alertIcon.innerText = "🎮";
+                document.getElementById('bonusText').innerText = "¡BONUS ACTIVE!";
+            } else {
+                alertBox.className = "smart-alert alert-danger";
+                alertMsg.innerText = "HORA LÍMITE SUPERADA. RIESGO DE APAGÓN.";
+                alertIcon.innerText = "⚠️";
+            }
+        } else {
+            alertBox.className = "smart-alert alert-danger";
+            alertMsg.innerText = "SISTEMA EN MODO NOCTURNO. PREPARA MAÑANA.";
+            alertIcon.innerText = "🌙";
+        }
+    }
+
+    function validateMission(element, id, xp) {
+        if (element.classList.contains('verified')) return;
+
+        const pass = prompt("SISTEMA BLOQUEADO. INTRODUCE CLAVE DE AUDITOR:");
+
+        if (pass === CLAVE_AUDITOR) {
+            points += xp;
+            completedToday.push(id);
+            
+            element.classList.add('verified');
+            element.querySelector('.xp-badge').innerHTML = "<span class='verified-icon'>COMPLETO</span>";
+            
+            save();
+            updateUI();
+            checkTimeAlerts();
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        } else if (pass !== null) {
+            alert("ERROR: CÓDIGO DE AUDITOR NO VÁLIDO.");
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('xpText').innerText = points;
+        const progress = Math.min((points % 1000) / 10, 100);
+        document.getElementById('xpBarFill').style.width = progress + '%';
+    }
+
+    function save() {
+        localStorage.setItem('lvl14_points', points);
+        localStorage.setItem('lvl14_today', JSON.stringify(completedToday));
+    }
+
+    function restoreMissions() {
+        const items = document.querySelectorAll('.mission-item');
+        completedToday.forEach(id => {
+            const item = items[id-1];
+            if (item) {
+                item.classList.add('verified');
+                item.querySelector('.xp-badge').innerHTML = "<span class='verified-icon'>COMPLETO</span>";
+            }
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
